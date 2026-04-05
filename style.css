@@ -47,7 +47,7 @@ text-align: center;
 	border-radius: 40px;
 	padding:20px;
 	margin: 20px auto;
-	width: 900;
+	max-width: 900px;
 }
 
 .par-pic{
@@ -55,7 +55,7 @@ display:block;
 margin:auto;
 margin:auto;
 max-width: 100%;
-heigh: auto;
+height: auto;
 	border-radius:20px;
 }
 
