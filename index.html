@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
 
-
+<!-- PROJECT 3 AI USAGE -->
  <!--
     AI Use Disclosure:
     Tool(s) ChatGPT (Free Version)
@@ -31,11 +31,25 @@
     Human Role: I don't know if I needed to include this but for my progress bar at the bottom I needed to know how "close" I was to scratch. So I gave it the math problem  of *if I started at a +28 handicap and I am now as +8.5 what percent is that. Then once it told me I manually entered it into my progress bar bootstrap.
     -->
 
+<!-- END PROJECT 3 AI USAGE -->
+ 
+<!-- PROJECT 4 AI USAGE -->
 
+<!--
+    AI Use Disclosure:
+    Tool(s) ChatGPT (Free Version)
+    Purpose: Wanted to ask it what else I could do to "make more cohesive, polished CSS"
+    Human Role: Chose some of the options it gave me, such as toying with the pictures on the document (par pic and such) auto scaling rather than a set width and height for each one. This created a much more natural looking site.
+    -->
 
+<!--
+    AI Use Disclosure:
+    Tool(s) ChatGPT (Free Version)
+    Purpose: Figure out what the proper scaling would be row and column wise for non desktop appliances like mobile
+    Human Role: Set up with col-lg, row mt, col-sm, mb- as it inquiried and then began filling in different column and row entries in order to see what looked best on my phone while keeping the desktop one the same. 
+    -->
 
-
-
+<!-- END PROJECT 4 AI USAGE -->
    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="How Aidan Will Become a Scratch Golfer">
@@ -52,12 +66,14 @@
   </head>
   <body>
     
-
-<div class="row"> <!-- nav and alert code -->
-<div class="col-md-9">
+<!-- nav and alert code -->
+<div class="container-fluid"> 
+<div class="row allign-items-center">
+<div class="col-12 col-lg-9">
   
 <nav class="navbar navbar-expand-lg bg-body-tertiary"><!-- start of nav code -->
   <div class="container-fluid">
+    <a class="navbar-brand" href="index.html"> Road to Scratch </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -84,7 +100,7 @@
  <!-- end of bootstrap nav code -->
 </div>
 
-<div class="col-md-3"> <!-- start of alert code-->
+<div class="col-12 col-lg-3"> <!-- start of alert code-->
 
 <div class="alert alert-info" role="alert">
   Aidan is Golfing 3/15/26 <a href="https://18birdies.com/install/?shortlink=9fe0fa5&c=Try%20for%20Free%20Test&pid=18Birdies%20Website&source_caller=ui" class="alert-link">Click Here</a> to Follow His Round!
@@ -121,7 +137,7 @@
 
 
 
-<div class="row">
+<div class="row mt-4">
 
 <div class="col-md-12">
  
@@ -141,9 +157,9 @@
 <div class="col-md-12">
 
 <div class="row mt-3"> <!-- start of practice card code -->
-<div class="col-md-4">
+<div class="col-12 col-sm-g col-lg-4 mb-4">
 
-<div class="card" style="width: 18rem;">
+<div class="card h-100">
   <div class="card-body">
     <h3 class="card-title">Practice</h3>
     <p class="card-text">Practice Makes Perfect</p>
@@ -154,8 +170,8 @@
 </div> <!-- end practice card -->
 
 
-<div class="col-md-4">
-<div class="card" style="width: 18rem;">
+<div class="col-12 col-sm-6 col-lg-4 mb-4">
+<div class="card h-100">
   <div class="card-body">
     <h3 class="card-title">Health</h3>
     <p class="card-text">Staying in Shape and Exercising is Key</p>
@@ -167,8 +183,8 @@
 
 
 
-<div class="col-md-4">
-<div class="card" style="width: 18rem;">
+<div class="col-12 col-sm-6 col-lg-4 mb-4">
+<div class="card h-100">
   <div class="card-body">
     <h3 class="card-title">Execution</h3>
     <p class="card-text">Only Way to get Better is to Play </p>

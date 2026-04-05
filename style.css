@@ -2,7 +2,7 @@
 body {
 font-family: Georgia, serif;
 line-height: 175%;
-margin: 0 15% 0;
+margin: 0;
 background: #06402B;
 color: #ffffff;
 text-align: center;
@@ -46,15 +46,16 @@ text-align: center;
 	background-color: rgba(255, 255, 255, .5);
 	border-radius: 40px;
 	padding:20px;
-	margin: 0px auto;
-	width: 80%;
+	margin: 20px auto;
+	width: 900;
 }
 
 .par-pic{
 display:block; 
 margin:auto;
-	width:500px;
-	height:230px;
+margin:auto;
+max-width: 100%;
+heigh: auto;
 	border-radius:20px;
 }
 
@@ -82,10 +83,22 @@ a:visited {
 }
 
 .navbar {
-  height: 100px; 
+  min-height: 80px; 
 }
 
 .alert-info {
-  height: 100px; 
+  min-height: 80px; 
+  display:flex;
+  align-items: center;
+  justify-content: center;
  
+}
+
+.card{
+	border-radius: 15px;
+transition: transform .2s;
+}
+
+.card:hover{
+	transform: scale(1.03);
 }
