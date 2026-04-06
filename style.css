@@ -53,10 +53,11 @@ text-align: center;
 .par-pic{
 display:block; 
 margin:auto;
-margin:auto;
 max-width: 100%;
 height: auto;
-	border-radius:20px;
+max-height: 350px;
+border-radius:20px;
+object-fit:cover;
 }
 
 .steps {
