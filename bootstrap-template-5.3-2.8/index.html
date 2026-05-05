@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- PROJECT 5 AI USAGE -->
+ <!--
+    AI Use Disclosure:
+    Tool(s) ChatGPT (Free Version)
+    Purpose: Couldn't figure out how to turn my original idea into a new website that set project paramaters
+    Human Role: It built me a "habit tracker" website base and gave me ideas of what to put onto it, and I then took to a piece of scratch paper and drew up what I wanted my website to look and function like
+    -->
+    <!--
+    AI Use Disclosure:
+    Tool(s) ChatGPT (Free Version)
+    Purpose: Gave it the elaborate layout code lovable gave me filled with javascript and unknown code and asked it to make it into simple CSS, HTML and barely any java
+    Human Role: Gave me a much more default website that essentially looked like a google doc, ready for me to add my own paramaters to it. 
+    -->
+     <!--
+    AI Use Disclosure:
+    Tool(s) ChatGPT (Free Version)
+    Purpose: Asked it to straighten out my top of page text so it would fit all different devices and also shade green black and grey text well size wise like a normal webpage wood
+    Human Role: Critiqued the spots it wanted certain colors (green black and grey text), picking which one I thouhg felt most inviting on the webpage and more of a user friendly design
+    -->
+     <!--
+    AI Use Disclosure:
+    Tool(s) ChatGPT (Free Version)
+    Purpose: Asked it to straighten out my fonts and colors throughout the cards i completed and so it would display well across all screens
+    Human Role: After creating default sized cards in the progress and streaks section and then the big tracking completed cards, I asked chat to give me the code to straighten out on all screens and chose which words I wanted bold versus gray and what size I wanted them using the code it gave me
+    -->
+
+     <!--
+    AI Use Disclosure:
+    Tool(s) ChatGPT (Free Version)
+    Purpose: Asked it to make my "practice completed buttons actually do something"
+    Human Role: This was a fun thing I added, as I couldn't have done this myself, but I made it so when you check the box for the completed it adds to a bar at the bottom showing the tracking. I coded all the cards with the pictures and words and the text in the buttons at the bottom of each ones, but then implemented the code to make them actually add progress to the bar by pasting it into my javascript area. Crazy how in depth javascript goes critiquting the code to make sure there was no mistakes was crazy in depth
+    -->
+    <!--
+    AI Use Disclosure:
+    Tool(s) ChatGPT (Free Version)
+    Purpose: For some reason couldn't get my top banner to look good centered with scratch track so i asked for CSS to center
+    Human Role: picked between the 2 options they gave me to center it, using a new translate term it used with my start button earlier and pasted it into my css
+    -->
+    <!--
+    AI Use Disclosure:
+    Tool(s) ChatGPT (Free Version)
+    Purpose: More JavaScript fun, asked it to make my 3 cards that would track your daily streak, total daily tasks and 7 day completion trackable using java script
+    Human Role: Copy and pasted the javascript and made sure it updated properly using all the daily functions
+    -->
+     <!--
+    AI Use Disclosure:
+    Tool(s) ChatGPT (Free Version)
+    Purpose: Last of the javascript fun, I asked it to make the progress bar say things like keep going! as the percetnages went from 0-100
+    Human Role: Updateed the java code with the if and else if code it provdied me, gave me flashbacks to ap comp sci in high school lol
+    -->
+   <!--
+   AI Use Disclosure:
+    Tool(s) ChatGPT (Free Version)
+    Purpose: Final touches to make add anything I needed to make display smooth between all types of screens
+    Human Role: Took all the sections that it said needed some work on certain displays and trial and errored all the different ways to see what loooked best. 
+    -->
+   
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A Golf Handicap Index Tracker Where Golfers Can Input Their Starting Handicap and Scores, and Track Their Progress as They Better Their Game">
+    <meta name="author" content="Aidan Sutton">
+    <title>ScratchTrack - Golf Handicap Index Tracker</title>
+
+   <!-- Bootstrap v5.3.8 -->
+   <!-- LOAD BOOTSTRAP CSS - DO NOT DELETE -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+   <!-- END LOADING BOOTSTRAP CSS -->
+    
+   <!-- Custom styles - add your own CSS to this stylesheet -->
+    <link href="style.css" rel="stylesheet">
+  </head>
+  <body>
+ 
+<!-- nav bar code -->
+<div class="container-fluid px-0"> 
+<div class="row align-items-center">
+<div class="col-12 col-lg-12">
+<nav class="navbar navbar-dark custom-nav"><!-- start of nav code -->
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="index.html"> ScratchTrack </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0 text-center">
+       <li class="nav-item">
+          <a class="nav-link" href="#putting-tracker">Putting Tracker</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#chipping-tracker">Chipping Tracker</a>
+        </li>
+         <li class="nav-item">
+          <a class="nav-link" href="#health-tracker">Health Tracker</a>
+        </li>
+         <li class="nav-item">
+          <a class="nav-link" href="#round-tracker">Round Tracker</a>
+        </li>
+         <li class="nav-item">
+          <a class="nav-link" href="#progress-tracker">Road to Scratch Progress</a>
+        </li>
+            <li class="nav-item">
+          <a class="nav-link" href="#about-handicap">About Handicaps</a>
+        </li>
+      </ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+<!-- end of nav bar code-->
+
+<!-- text page opening -->
+
+<div class="container mt-4">
+
+<div class="text-center mb-5">
+  <p class="text-success fw-semibold mb-2" style="letter-spacing: 2px;"> Daily Scratch Tracker </p>
+  <h2 class="fw-bold display-6 mb-2"> Put in the Work. </h2>
+  <h2 class="fw-bold text-success"> Lower Your Handicap. </h2>
+  <h3 class="text-muted fw-normal mt-3"> Track your daily habits that move you toward shooting lower golf scores </h3>
+</div>
+
+<div class="text-center my-4">
+  <a href="#tracker" class="start-btn text-decoration-none"> Start Tracking ↓ </a>
+</div>
+</div>
+<!-- end text page opening -->
+
+
+<!-- Progress Start -->
+<div class="mb-4 px-3 px-md-4">
+
+  <!-- Section Title -->
+  <h3 class="fw-bold text-start">Progress &amp; Streaks</h3>
+  <p class="text-muted text-start mb-3">
+    Your last 7 days at a glance.
+  </p>
+
+  <!-- Cards Row -->
+  <div class="row">
+
+    <!-- Longest Streak -->
+    <div class="col-md-4 mb-3">
+      <div class="card p-3">
+      <p class="text-muted mb-1">Longest Streak</p>
+      <div class="d-flex align-items-baseline gap-2">
+        <h2 class="fw-bold mb-0">0</h2>
+        <small class="text-muted">days</small>
+      </div>
+    </div>
+    </div>
+
+    <!-- Total Check-ins -->
+    <div class="col-md-4 mb-3">
+      <div class="card p-3">
+        <p class="text-muted mb-1">Total Daily Tasks Completed</p>
+        <h2 class="fw-bold mb-0">0</h2>
+      </div>
+    </div>
+
+    <!-- 7-Day Completion -->
+    <div class="col-md-4 mb-3">
+      <div class="card p-3">
+        <p class="text-muted mb-1">7-Day Completion</p>
+              <div class="d-flex align-items-baseline gap-2">
+        <h2 class="fw-bold mb-0">0</h2>
+                <small class="text-muted">%</small>
+
+      </div>
+    </div>
+</div>
+  </div>
+</div>
+<!-- End Progress -->
+
+  <!-- Tracker Start -->
+   <!-- Putter Tracker Start -->
+<div class="row" id="tracker">
+  <div class= "col-12 mb-4" id="putting-tracker">
+  <div class="card p-4">
+
+<h3 class="fw-bold text-start text-black mb-3"> Putting Practice Tracker </h3>
+<img src="putting.webp" class="img-fluid mb-4" alt="Putting Practice Image">
+<p class="text-start"> <b> Hit some putts... </b> <br> <br> Do some kind of putting drill that lasts more than 10 minutes.<br> <br> Whether you are out there for 10 minutes or hours, doing a drill that improves your putting confidence is a must for continued improvement.</p>
+
+<button class="btn btn-success mt-2" onclick="completeHabit(this)"> Putting Practice Completed </button>
+</div>
+</div>
+ <!-- Putter Tracker End -->
+ <!-- Chipping Tracker Start -->
+  
+  <div class= "col-12 mb-4" id="chipping-tracker">
+  <div class="card p-4">
+
+<h4 class="fw-bold text-start text-black mb-3"> Chipping Practice Tracker </h4>
+<img src="chipping.webp" class="img-fluid mb-4" alt="Chipping Practice Image">
+<p class="text-start"> <b> Practice your chipping... </b> <br> <br> Hit out of a bunker, hit some bump and runs around the green, practice your chips from 10-50 yards, maybe even practice some flop shots for fun. <br> <br> You hit <b> 70% of all golf shots </b> from within 100 yards. You must become familiar with your wedge on the road to scratch. </p>
+
+<button class="btn btn-success mt-2" onclick="completeHabit(this)"> Chipping Practice Completed </button>
+</div>
+</div>
+ <!-- Chipping Tracker End -->
+ <!-- Health Tracker Start -->
+ <div class= "col-12 mb-4" id="health-tracker">
+  <div class="card p-4">
+
+<h4 class="fw-bold text-start text-black mb-3"> Health Tracker </h4>
+<img src="health.jpeg" class="img-fluid mb-4" alt="Health Image">
+<p class="text-start"> While golf is not the most physcially demanding sport, to be <b>to be the best of the best </b> you must stay in good shape and monitor your health. <br> <br> Wether its going for a walk or run, playing a sport outside with friends, doing an arm or leg day at the gym, or even just eating especially healthy and watching your macros that day... <br> <br> Go to bed knowing you were healthily productive that day, and that your body is better off than if you did nothing.</p>
+
+<button class="btn btn-success mt-2" onclick="completeHabit(this)"> Daily Healthy Habits Completed </button>
+</div>
+</div>
+
+ <!-- Health Tracker End -->
+ <!-- Round Tracker Start -->
+  
+  <div class= "col-12 mb-4" id="round-tracker">
+  <div class="card p-4">
+
+<h4 class="fw-bold text-start text-black mb-3"> Round Tracker </h4>
+<img src="golfing.webp" class="img-fluid mb-4" alt="Round of Golf Image">
+<p class="text-start"> <b> More Imporant Than All the Rest...</b> <br> <br> On days you're able to get out on the course, forget about all the other tasks that day. <br> <br>Still try and complete them but prioritize this over all. <br> <br> Whether it is 3 holes or 18 holes, <b> nothing improves your golf game more than getting out there and playing </b> </p>
+
+<button class="btn btn-success mt-2" onclick="completeRound(this)"> Round Completed       (100%) </button>
+</div>
+</div>
+</div>
+
+ <!-- Round Tracker End -->
+
+  <!-- Tracker End -->
+
+    <!-- Start Daily Progress-->
+<div class="mt-5 mb-5 pb-4" id="daily-progress">
+<h3> Daily Progress </h3>
+<div class="progress">
+<div id="progressBar" class="progress-bar" style="width: 0%"> 0%  
+</div>
+</div>
+</div>
+</div>
+    <!-- End Daily Progress-->
+   
+    <!-- Start Handicap Info-->
+
+ 
+  <div class= "col-12 mb-4" id="about-handicap">
+  <div class="card p-4">
+
+<h4 class="fw-bold text-start text-black mb-3"> About Handicap </h4>
+<img src="handicap.jpg" class="img-fluid mb-4" alt="Handicap Scorecard Image">
+<p class="text-start"> <b>Being a Scratch Golfer Means a 0.0 Handicap... </b> But what is a handicap? <br> <br> You don't calculate your handicap until you break 100 for the first time typically, shooting a 100 is a 28 handicap and also where the fun begins. <br> <br> A golf handicap is a numerical measure of an amateur golfer's potential, allowing players of different skill levels to compete fairly. It represents teh number of strokes a player can deduct from their gross score, with a lower handicap indicating a better player. <br> <br> <b> It is calculated by averaging the best 8 of a players last 20 scores </b>
+</p>
+
+</div>
+</div>
+    <!-- End Handicap Info-->
+
+
+<!--progress title start -->
+<div class="row mt-3 mb-5 px-3 px-md-4" id="progress-tracker"> <!-- start of progress row -->
+<div class="col-md-12">
+
+  <h3> Road to Scratch Progress </h3>
+</div>
+</div>
+<!-- users input their own handicap -->
+<div class="mb-3p x-3 px-md-4">
+  <label for="handicapInput" class="form-label fw-bold">
+  Enter Your Current Handicap
+</label>
+
+<input
+ type="number"
+ step="0.1"
+ class="form-control"
+ id="handicapInput"
+ placeholder="e.g 8.5"
+ oninput="updateHandicapProgress()">
+
+</div>
+
+<!-- start of progress bar bootstrap-->
+  <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="69.6" aria-valuemin="0" aria-valuemax="100">
+
+      <div class="progress-bar progress-bar-striped progress-bar-animated" 
+      id="handicapBar"
+      style="width: 0%"> 0% 
+    </div>
+</div>
+<!-- end bootstrap bar code -->
+
+<p class="d-none d-md-block px-3 px-md-4">
+  (Based on Linear Movement Since Beginning as a +28 Handicap (Shooting 100) (Scratch = 0 Handicap)
+</p>
+
+<!-- end progress code-->
+
+
+<!-- JS -->
+<script>
+  let totalCompletedTasks = parseInt(localStorage.getItem("totalCompletedTasks")) || 0;
+
+// Stores last 7 days of completion data like:
+// { "Mon May 4 2026": true, ... }
+let weeklyLog = JSON.parse(localStorage.getItem("weeklyLog")) || {};
+
+
+let streak = 0;
+let lastDate = localStorage.getItem("lastDate");
+let lastStreak = localStorage.getItem("streak");
+
+if (lastStreak) {
+  streak = parseInt(lastStreak);
+}
+
+// Check if new day
+function checkStreakReset() {
+  const today = new Date().toDateString();
+
+  if (lastDate !== today) {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    // If last login was yesterday → keep streak possible
+    if (lastDate === yesterday.toDateString()) {
+      // keep streak alive, just move day forward
+    } else {
+      // missed a day → reset streak
+      streak = 0;
+    }
+
+    localStorage.setItem("lastDate", today);
+    updateStreakUI();
+  }
+}
+function updateStreakUI() {
+  let streakCard = document.querySelector(".card p.text-muted");
+
+  if (streakCard && streakCard.textContent.includes("Longest Streak")) {
+    streakCard.nextElementSibling.querySelector("h2").innerText = streak;
+  }
+
+  // OR more reliable direct selector:
+  document.querySelectorAll(".card").forEach(card => {
+    if (card.innerText.includes("Longest Streak")) {
+      card.querySelector("h2").innerText = streak;
+    }
+  });
+
+  localStorage.setItem("streak", streak);
+}
+
+let completed = 0;
+const total = 3;
+let roundDone = false;
+
+function completeHabit(button) {
+  if (button.classList.contains("done") || roundDone) return;
+
+  button.classList.add("done");
+  button.innerText = "Done";
+  button.disabled = true;
+
+  completed++;
+ totalCompletedTasks++;
+
+  localStorage.setItem("totalCompletedTasks", totalCompletedTasks);
+
+  updateProgress();
+  updateStats();
+
+
+}
+function updateStats() {
+  // TOTAL TASKS
+  document.querySelectorAll(".card").forEach(card => {
+    if (card.innerText.includes("Total Daily Tasks Completed")) {
+      card.querySelector("h2").innerText = totalCompletedTasks;
+    }
+  });
+
+  // 7-DAY CALC
+  const today = new Date();
+
+  // mark today as completed day if at least 1 task done
+  if (completed > 0) {
+    weeklyLog[today.toDateString()] = true;
+  }
+
+  // cleanup old entries (keep last 7 days only)
+  let cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 6);
+
+  Object.keys(weeklyLog).forEach(dateStr => {
+    let date = new Date(dateStr);
+    if (date < cutoff) {
+      delete weeklyLog[dateStr];
+    }
+  });
+
+  localStorage.setItem("weeklyLog", JSON.stringify(weeklyLog));
+
+  // calculate % of last 7 days completed
+  let daysTracked = 7;
+  let completedDays = Object.keys(weeklyLog).length;
+
+  let percent = Math.round((completedDays / daysTracked) * 100);
+
+  document.querySelectorAll(".card").forEach(card => {
+    if (card.innerText.includes("7-Day Completion")) {
+      card.querySelector("h2").innerText = percent;
+    }
+  });
+}
+
+function completeRound(button) {
+  if(roundDone) return;
+
+  roundDone = true;
+
+  button.innerText = "Round Complete ✓ "
+  button.disabled = true;
+
+  document.querySelectorAll(".btn-success").forEach(btn => {
+    if (btn !== button) {
+    btn.disabled = true;
+    btn.innerText = "Forget About It";}
+  });
+
+  let bar = document.getElementById("progressBar");
+  bar.style.width = "100%";
+  bar.innerText = "100%";
+}
+
+function updateProgress(){
+  let percent = Math.round((completed / total) * 100);
+  if (percent > 100) percent = 100;
+
+
+  let bar = document.getElementById("progressBar");
+  bar.style.width = percent + "%";
+  if (percent === 0) {
+  bar.innerText = "Get to Work!";
+} else if (percent < 50) {
+  bar.innerText = "Keep Going! " + percent + "%";
+} else if (percent < 100) {
+  bar.innerText = "Almost There! " + percent + "%";
+} else {
+  bar.innerText = "Daily Grind Complete! 100%";
+}
+  // If all tasks done → count as a completed day
+  if (completed === total) {
+    const today = new Date().toDateString();
+
+    if (localStorage.getItem("lastCompletedDay") !== today) {
+      streak++;
+      localStorage.setItem("lastCompletedDay", today);
+      localStorage.setItem("streak", streak);
+      localStorage.setItem("lastDate", today);
+      updateStreakUI();
+    }
+  }
+}
+checkStreakReset();
+updateStreakUI();
+
+updateStats();
+
+// Handicap Insert Code 
+function updateHandicapProgress() {
+  let input = document.getElementById("handicapInput").value;
+
+  let handicap = parseFloat(input);
+
+  if (isNaN(handicap)) return;
+
+  let start = 28;
+
+  let percent = ((start - handicap) / start) * 100;
+
+  // Clamp between 0 and 100
+  if (percent < 0) percent = 0;
+  if (percent > 100) percent = 100;
+
+  percent = Math.round(percent * 10) / 10; 
+
+  let bar = document.getElementById("handicapBar");
+  bar.style.width = percent + "%";
+  bar.innerText = handicap + " Handicap (" + percent +" %)";
+}
+
+updateStats();
+
+// End Handicap Insert Code 
+
+</script>
+
+
+<!-- LOAD BOOTSTRAP JAVASCRIPT - DO NOT DELETE -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<!-- END LOADING BOOTSTRAP JAVASCRIPT -->
+      
+      <!-- creates space below handicap bar and footer -->
+<div class="container py-2">
+</div>
+<!-- start footer -->
+<footer class="footer text-center py-3 mt-5">
+  <p class="mb-0 text-white fw-bold"> Copyright © ScratchTrack 2026</p>
+</footer>
+<!-- end footer -->
+  </body>
+</html>
