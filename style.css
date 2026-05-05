@@ -1,0 +1,56 @@
+/* ADD YOUR CUSTOM CSS TO THIS FILE BELOW */
+
+.start-btn {
+	width: 140px;
+	height: 140px;
+	border-radius: 50%;
+	background-color: #1f5e3b;
+	color: white;
+	font-weight: bold;
+	border: none;
+	font-size: 1rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto;
+	transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+.start-btn:hover {
+	background-color: #17462c;
+	transform: translateY(-3px);
+	cursor:pointer;
+}
+
+.navbar {
+	background-color: #1f5e3b !important;
+}
+
+.navbar .nav-link, 
+.navbar .navbar-brand {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	color: white !important;
+}
+
+.navbar .nav-link:hover {
+	color: #d1e7dd !important;
+}
+
+
+.footer {
+	background-color: #1f5e3b;
+	width: 100%;
+	margin: 0;
+	padding: 20px 0;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+}
+
