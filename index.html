@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mid-Major Challenge</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: one centered column. Scoreboard (balance, record, day) on top, two jersey-colored pick cards side by side with each person's stats at the bottom of their card, then a scrollable history of past picks. */
+:root {
+  --bg: #EDF1F7;
+  --surface: #FFFFFF;
+  --ink: #16213A;
+  --muted: #566282;
+  --line: #D3DBE9;
+  --ball: #E8601C;
+  --connor: #2B5FC2;
+  --aidan: #C4440F;
+  --on-player: #FFFFFF;
+  --on-solid: #FFFFFF;
+  --win: #0E6B32;
+  --win-soft: #DDF3E5;
+  --loss: #C42B2B;
+  --loss-soft: #FBE1E1;
+  --push: #566282;
+  --push-soft: #E8ECF3;
+  --pending: #8A5A00;
+  --pending-soft: #FFF1D6;
+  --font-display: "Bowlby One", "Arial Black", Impact, sans-serif;
+  --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1525; --surface: #172138; --ink: #EAF0FB; --muted: #A2B0CC; --line: #2B3957;
+    --ball: #FF7A3A; --connor: #86AAFF; --aidan: #FF9560; --on-player: #0E1525; --on-solid: #0E1525;
+    --win: #4ADE80; --win-soft: #12301F; --loss: #FF7A7A; --loss-soft: #3A1B22;
+    --push: #A2B0CC; --push-soft: #222E48; --pending: #FFC86B; --pending-soft: #3A2E12;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1525; --surface: #172138; --ink: #EAF0FB; --muted: #A2B0CC; --line: #2B3957;
+  --ball: #FF7A3A; --connor: #86AAFF; --aidan: #FF9560; --on-player: #0E1525; --on-solid: #0E1525;
+  --win: #4ADE80; --win-soft: #12301F; --loss: #FF7A7A; --loss-soft: #3A1B22;
+  --push: #A2B0CC; --push-soft: #222E48; --pending: #FFC86B; --pending-soft: #3A2E12;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  padding-block: 20px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+:focus-visible { outline: 3px solid var(--ball); outline-offset: 2px; }
+.wrap { max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
+.label { margin: 0; font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); }
+code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .9em; }
+
+/* sample-data banner */
+.demo { background: var(--pending-soft); color: var(--pending); border: 2px solid var(--pending); border-radius: 14px; padding: 10px 14px; font-size: .9rem; font-weight: 600; }
+
+/* header */
+.top { position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: center; gap: 18px; padding: 6px 0; }
+.court { position: absolute; right: 0; top: 0; height: 100%; width: auto; max-width: 60%; z-index: -1; fill: none; stroke: var(--line); stroke-width: 3; }
+.ball-wrap { position: relative; width: 64px; height: 78px; flex: none; }
+.ball { position: absolute; left: 0; top: 4px; width: 64px; height: 64px; animation: bounce 1.5s cubic-bezier(.33,0,.67,1) infinite; }
+.ball-wrap::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 2px; height: 7px; border-radius: 50%; background: var(--ink); opacity: .16; animation: shadow 1.5s cubic-bezier(.33,0,.67,1) infinite; }
+@keyframes bounce { 0%, 100% { transform: translateY(6px); } 50% { transform: translateY(-8px); } }
+@keyframes shadow { 0%, 100% { transform: scaleX(1); opacity: .2; } 50% { transform: scaleX(.7); opacity: .1; } }
+h1 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(1.7rem, 6vw, 2.7rem); line-height: 1.05; letter-spacing: .01em; text-wrap: balance; }
+.sub { margin: 6px 0 0; color: var(--muted); font-weight: 600; }
+
+/* rules */
+.rules { background: var(--surface); border: 2px solid var(--line); border-radius: 18px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
+.rules p { margin: 0; font-size: 1.05rem; max-width: 72ch; }
+.rules em { font-style: italic; font-weight: 700; }
+.chips { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.chip { display: inline-flex; align-items: center; padding: 3px 11px; border-radius: 999px; font-size: .82rem; font-weight: 800; border: 2px solid var(--line); background: var(--surface); color: var(--ink); white-space: nowrap; }
+.chip.win { background: var(--win); border-color: var(--win); color: var(--on-solid); }
+.chip.loss { background: var(--loss); border-color: var(--loss); color: var(--on-solid); }
+.chip.push { background: var(--push-soft); border-color: var(--push); color: var(--push); }
+.chip.pending { background: var(--pending-soft); border-color: var(--pending); color: var(--pending); }
+.chip.who { background: var(--player); border-color: var(--player); color: var(--on-player); }
+.connor { --player: var(--connor); }
+.aidan { --player: var(--aidan); }
+
+/* scoreboard */
+.board { display: grid; grid-template-columns: 1.7fr 1fr; grid-template-areas: "bal rec" "bal day"; gap: 12px; }
+.tile { background: var(--surface); border: 2px solid var(--line); border-radius: 18px; padding: 16px 18px; min-width: 0; display: flex; flex-direction: column; }
+.balance { grid-area: bal; --state: var(--ink); border-color: var(--state); }
+.balance.is-pos { --state: var(--win); }
+.balance.is-neg { --state: var(--loss); }
+.rec { grid-area: rec; }
+.day { grid-area: day; }
+.big { margin: 8px 0 4px; font-family: var(--font-display); font-weight: 400; font-size: clamp(2.7rem, 10vw, 4.6rem); line-height: 1; color: var(--state, var(--ink)); font-variant-numeric: tabular-nums; }
+.mid { margin: 6px 0 2px; font-family: var(--font-display); font-weight: 400; font-size: clamp(1.8rem, 6vw, 2.5rem); line-height: 1.05; font-variant-numeric: tabular-nums; }
+.note { margin: 0; font-size: .88rem; color: var(--muted); font-weight: 600; }
+.spark { color: var(--state); margin-top: 10px; }
+.spark svg { display: block; width: 100%; height: auto; }
+@media (max-width: 700px) {
+  .board { grid-template-columns: 1fr 1fr; grid-template-areas: "bal bal" "rec day"; }
+}
+
+/* section headings */
+.sec-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 16px; margin-bottom: 12px; }
+h2.sec { margin: 0; font-size: 1.4rem; font-weight: 800; line-height: 1.2; }
+.sec-note { color: var(--muted); font-weight: 600; font-size: .92rem; }
+
+/* today's picks */
+.today-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 720px) { .today-grid { grid-template-columns: 1fr; } }
+.card { background: var(--surface); border: 2px solid var(--line); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
+.card-head { background: var(--player); color: var(--on-player); padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.card-head h3 { margin: 0; font-size: 1.08rem; font-weight: 800; }
+.tag { font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; border: 2px solid currentColor; border-radius: 999px; padding: 1px 9px; }
+.card-body { flex: 1; padding: 18px; display: flex; flex-direction: column; gap: 12px; min-height: 176px; }
+.pick-text { margin: 0; font-size: clamp(1.25rem, 4vw, 1.6rem); font-weight: 800; line-height: 1.2; text-wrap: balance; overflow-wrap: anywhere; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.payout { margin: 0; color: var(--muted); font-weight: 600; font-size: .92rem; }
+.off { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 4px; border: 2px dashed var(--line); border-radius: 14px; padding: 16px; color: var(--muted); }
+.off strong { font-size: 1.5rem; font-weight: 800; }
+.off span { font-weight: 600; }
+.stats { border-top: 2px solid var(--line); padding: 14px 18px 18px; }
+.stats dl { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; margin: 10px 0 0; }
+.stats dt { font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.stats dd { margin: 0; font-size: 1.35rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.pos { color: var(--win); }
+.neg { color: var(--loss); }
+
+/* history */
+.history { background: var(--surface); border: 2px solid var(--line); border-radius: 18px; max-height: 440px; overflow: auto; overscroll-behavior: contain; }
+.row { display: grid; grid-template-columns: 84px 90px minmax(0, 1fr) 70px 84px 88px; gap: 12px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.row:last-child { border-bottom: 0; }
+.row.head { position: sticky; top: 0; z-index: 1; background: var(--surface); border-bottom: 2px solid var(--line); padding-block: 10px; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.row.win { background: var(--win-soft); }
+.row.loss { background: var(--loss-soft); }
+.c-day { display: flex; flex-direction: column; line-height: 1.2; }
+.c-day small { color: var(--muted); font-weight: 600; font-size: .78rem; }
+.c-pick { font-weight: 700; overflow-wrap: anywhere; }
+.c-odds { font-weight: 800; font-variant-numeric: tabular-nums; }
+.c-profit { text-align: right; font-weight: 800; font-variant-numeric: tabular-nums; }
+.c-profit.zero { color: var(--muted); }
+.empty { padding: 28px 20px; text-align: center; color: var(--muted); font-weight: 600; }
+@media (max-width: 700px) {
+  .row.head { display: none; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+  .c-pick { order: -1; flex-basis: 100%; }
+  .c-day { flex-direction: row; align-items: baseline; gap: 6px; }
+  .c-profit { margin-left: auto; }
+}
+
+footer { color: var(--muted); font-size: .85rem; font-weight: 600; text-align: center; padding-top: 6px; }
+@media (prefers-reduced-motion: reduce) {
+  .ball, .ball-wrap::after { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="demo" id="demo" hidden><strong>Sample Data Preview.</strong> Set <code>DEMO_MODE</code> to <code>false</code> in the Script to Go Live With Your Real Picks.</div>
+
+<div class="wrap">
+  <header class="top">
+    <svg class="court" viewBox="0 0 240 120" aria-hidden="true"><circle cx="170" cy="60" r="46"/><circle cx="170" cy="60" r="8"/><line x1="170" y1="0" x2="170" y2="120"/></svg>
+    <div class="ball-wrap" aria-hidden="true">
+      <svg class="ball" viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="var(--ball)" stroke="var(--ink)" stroke-width="3"/><path d="M32 3v58M3 32h58M10 11c14 10 14 32 0 42M54 11c-14 10-14 32 0 42" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/></svg>
+    </div>
+    <div>
+      <h1>The Mid-Major Challenge</h1>
+      <p class="sub">Connor &amp; Aidan &middot; $10 a Day &middot; One Season of Mid-Major Hoops</p>
+    </div>
+  </header>
+
+  <section class="rules" aria-labelledby="rules-h">
+    <h2 class="label" id="rules-h">The Rules</h2>
+    <p>We Will Place a $10 Bet Each Day <em>(Must Be a Pick-Em, Spread, Over-Under or + Money Underdog)</em> on a Game Including a Mid-Major Basketball Team, $5 Each person. The Person Who Makes the Pick Will Rotate Each Day, Starting With Connor on November 2nd and Continuing that Rotation Until the End of the Season</p>
+    <ul class="chips" aria-label="Allowed bet types">
+      <li class="label">Allowed Bets</li>
+      <li class="chip">Pick-Em</li>
+      <li class="chip">Spread</li>
+      <li class="chip">Over-Under</li>
+      <li class="chip">+ Money Underdog</li>
+    </ul>
+  </section>
+
+  <section class="board" aria-label="Scoreboard">
+    <div class="tile balance" id="balanceTile">
+      <p class="label">Combined Balance</p>
+      <p class="big" id="balanceValue">$0.00</p>
+      <p class="note">Open Bets Count as Money Out Until They Settle.</p>
+      <div class="spark" id="spark" hidden></div>
+      <p class="note" id="sparkCaption" hidden>Balance After Each Pick. Dashed Line Is Break Even.</p>
+    </div>
+    <div class="tile rec">
+      <p class="label">Combined Record</p>
+      <p class="mid" id="recValue">0-0</p>
+      <p class="note" id="recSub">No Picks Settled Yet</p>
+    </div>
+    <div class="tile day">
+      <p class="label" id="dayLabel">Season Day</p>
+      <p class="mid" id="dayValue">-</p>
+      <p class="note" id="daySub"></p>
+    </div>
+  </section>
+
+  <section aria-labelledby="today-h">
+    <div class="sec-head">
+      <h2 class="sec" id="today-h">Today's Picks</h2>
+      <span class="sec-note" id="todayDate"></span>
+    </div>
+    <div class="today-grid" id="todayGrid"></div>
+  </section>
+
+  <section aria-labelledby="past-h">
+    <div class="sec-head">
+      <h2 class="sec" id="past-h">Past Picks</h2>
+      <span class="sec-note" id="historyMeta">Newest First. Green Is a Win, Red Is a Loss.</span>
+    </div>
+    <div class="history" id="history" tabindex="0" aria-label="Past picks, scrollable"></div>
+  </section>
+
+  <footer>Just a Friendly Challenge Between Friends. No Access Betting, Only the Challenge.</footer>
+</div>
+
+<script>
+/* ============================================================
+   EDIT THIS SECTION TO UPDATE THE SITE
+   ------------------------------------------------------------
+   Each day, add one line to PICKS. When the game ends, change
+   result from "pending" to "win", "loss" or "push".
+
+   date   : "YYYY-MM-DD"
+   picker : "Connor" or "Aidan"
+   pick   : text shown on the page
+   type   : "Spread", "Over-Under", "Pick-Em" or "Money Underdog"
+   odds   : American odds, e.g. -110 or 150
+   result : "pending", "win", "loss" or "push"
+   ============================================================ */
+const DEMO_MODE = true;            // true = sample data preview, false = your real picks
+const SEASON_START = "2026-11-02"; // Day 1
+const FIRST_PICKER = "Connor";
+const STAKE = 10;                  // combined dollars bet per day ($5 each)
+
+const PICKS = [
+  // { date: "2026-11-02", picker: "Connor", pick: "James Madison +6.5 vs. Old Dominion", type: "Spread", odds: -110, result: "pending" },
+];
+
+/* Sample data, only used while DEMO_MODE is true. */
+const DEMO_TODAY = "2026-11-09";
+const DEMO_PICKS = [
+  { date: "2026-11-02", picker: "Connor", pick: "Drake -3.5 vs. Bradley", type: "Spread", odds: -110, result: "win" },
+  { date: "2026-11-03", picker: "Aidan", pick: "Liberty vs. Lipscomb Over 142.5", type: "Over-Under", odds: -110, result: "win" },
+  { date: "2026-11-04", picker: "Connor", pick: "Colgate to beat Navy", type: "Money Underdog", odds: 150, result: "win" },
+  { date: "2026-11-05", picker: "Aidan", pick: "Dayton -2.5 at Richmond", type: "Spread", odds: -105, result: "loss" },
+  { date: "2026-11-06", picker: "Connor", pick: "Princeton PK vs. Yale", type: "Pick-Em", odds: -110, result: "win" },
+  { date: "2026-11-07", picker: "Aidan", pick: "Furman to beat Wofford", type: "Money Underdog", odds: 210, result: "loss" },
+  { date: "2026-11-08", picker: "Connor", pick: "UNC Wilmington vs. Charleston Under 139", type: "Over-Under", odds: -110, result: "push" },
+  { date: "2026-11-09", picker: "Aidan", pick: "James Madison +6.5 vs. Old Dominion", type: "Spread", odds: -110, result: "pending" }
+];
+</script>
+
+<script>
+(function () {
+  'use strict';
+  var PEOPLE = ['Connor', 'Aidan'];
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  };
+  var pad = function (n) { return String(n).padStart(2, '0'); };
+  var toKey = function (d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+  var utc = function (k) { var p = k.split('-').map(Number); return Date.UTC(p[0], p[1] - 1, p[2]); };
+  var diff = function (a, b) { return Math.round((utc(b) - utc(a)) / 864e5); };
+  var addDays = function (k, n) { return new Date(utc(k) + n * 864e5).toISOString().slice(0, 10); };
+  var short = function (k) { return new Date(utc(k)).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }); };
+  var long = function (k) { return new Date(utc(k)).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'UTC' }); };
+  var cents = function (n) { return Math.round(n * 100) / 100; };
+
+  function money(n, signed) {
+    var r = cents(n);
+    var abs = Math.abs(r).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    if (r < 0) return '-$' + abs;
+    return (signed && r > 0 ? '+' : '') + '$' + abs;
+  }
+  function oddsText(o) { return o > 0 ? '+' + o : String(o); }
+  function toWin(o) { return cents(STAKE * (o > 0 ? o / 100 : 100 / -o)); }
+  function profitOf(p) {
+    if (p.result === 'win') return toWin(p.odds);
+    if (p.result === 'push') return 0;
+    return -STAKE; /* loss, or still pending (money is out) */
+  }
+  function cls(n) { var r = cents(n); return r > 0 ? 'pos' : r < 0 ? 'neg' : ''; }
+
+  var todayKey = DEMO_MODE ? DEMO_TODAY : toKey(new Date());
+  var picks = (DEMO_MODE ? DEMO_PICKS : PICKS).map(function (p) {
+    var q = {
+      date: p.date, picker: p.picker, pick: p.pick, type: p.type || '',
+      odds: Number(p.odds), result: String(p.result || 'pending').toLowerCase()
+    };
+    q.profit = profitOf(q);
+    return q;
+  }).sort(function (a, b) { return a.date.localeCompare(b.date); });
+
+  var other = function (name) { return PEOPLE.filter(function (n) { return n !== name; })[0]; };
+  var dayNum = diff(SEASON_START, todayKey);
+  var started = dayNum >= 0;
+  var todays = picks.filter(function (p) { return p.date === todayKey; })[0];
+  var due = started ? (dayNum % 2 === 0 ? FIRST_PICKER : other(FIRST_PICKER)) : null;
+  var picker = todays ? todays.picker : due;
+
+  /* ---------- combined numbers ---------- */
+  var W = 0, L = 0, P = 0, balance = 0, run = [0];
+  picks.forEach(function (p) {
+    if (p.result === 'win') W++; else if (p.result === 'loss') L++; else if (p.result === 'push') P++;
+    balance = cents(balance + p.profit);
+    run.push(balance);
+  });
+  var recText = function (w, l, p) { return w + '-' + l + (p ? '-' + p : ''); };
+
+  if (DEMO_MODE) $('demo').hidden = false;
+
+  var tile = $('balanceTile');
+  tile.className = 'tile balance ' + (balance > 0 ? "is-pos" : balance < 0 ? "is-neg" : "");
+  $('balanceValue').textContent = money(balance, true);
+
+  $('recValue').textContent = recText(W, L, P);
+  $('recSub').textContent = (W + L) ? Math.round(100 * W / (W + L)) + '% Win Rate' + (P ? ' · ' + P + (P === 1 ? ' Push' : ' Pushes') : '') : 'No Picks Settled Yet';
+
+  if (started) {
+    $('dayLabel').textContent = 'Season Day';
+    $('dayValue').textContent = 'Day ' + (dayNum + 1);
+    $('daySub').textContent = picker + "'s Pick Today";
+  } else {
+    var n = -dayNum;
+    $('dayLabel').textContent = 'First Pick';
+    $('dayValue').textContent = short(SEASON_START);
+    $('daySub').textContent = 'Tips Off in ' + n + (n === 1 ? ' Day' : ' Days');
+  }
+
+  if (run.length > 1) {
+    var Wd = 600, H = 110, px = 10, pt = 14, pb = 14;
+    var lo = Math.min.apply(null, run.concat(0)), hi = Math.max.apply(null, run.concat(0)), span = (hi - lo) || 1;
+    var x = function (i) { return px + i * (Wd - 2 * px) / (run.length - 1); };
+    var y = function (v) { return pt + (hi - v) * (H - pt - pb) / span; };
+    var d = run.map(function (v, i) { return (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(v).toFixed(1); }).join(' ');
+    var last = run.length - 1;
+    $('spark').innerHTML =
+      '<svg viewBox="0 0 ' + Wd + ' ' + H + '" role="img" aria-label="Balance after each pick">' +
+      '<line x1="' + px + '" y1="' + y(0).toFixed(1) + '" x2="' + (Wd - px) + '" y2="' + y(0).toFixed(1) + '" stroke="var(--line)" stroke-width="2" stroke-dasharray="6 6"/>' +
+      '<path d="' + d + '" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>' +
+      '<circle cx="' + x(last).toFixed(1) + '" cy="' + y(run[last]).toFixed(1) + '" r="6" fill="currentColor" stroke="var(--surface)" stroke-width="3"/></svg>';
+    $('spark').hidden = false;
+    $('sparkCaption').hidden = false;
+  }
+
+  /* ---------- per-person stats ---------- */
+  function statsFor(name) {
+    var mine = picks.filter(function (p) { return p.picker === name; });
+    var w = 0, l = 0, p0 = 0, profit = 0;
+    mine.forEach(function (p) {
+      if (p.result === 'win') w++; else if (p.result === 'loss') l++; else if (p.result === 'push') p0++;
+      profit = cents(profit + p.profit);
+    });
+    return { n: mine.length, wagered: mine.length * STAKE, profit: profit, record: recText(w, l, p0) };
+  }
+
+  /* ---------- today's cards ---------- */
+  function statusChip(p) {
+    if (p.result === 'win') return '<span class="chip win">Won ' + money(p.profit, true) + '</span>';
+    if (p.result === 'loss') return '<span class="chip loss">Lost ' + money(p.profit) + '</span>';
+    if (p.result === 'push') return '<span class="chip push">Push</span>';
+    return '<span class="chip pending">Pending</span>';
+  }
+  function bodyFor(name) {
+    if (!started) {
+      if (name === FIRST_PICKER) {
+        return { tag: '', html: '<div class="off"><strong>Tips Off ' + short(SEASON_START) + '</strong><span>' + esc(name) + ' Makes the First Pick.</span></div>' };
+      }
+      return { tag: '', html: '<div class="off"><strong>Off Day</strong><span>Up Second, on ' + short(addDays(SEASON_START, 1)) + '.</span></div>' };
+    }
+    if (name !== picker) {
+      return { tag: 'Off Today', html: '<div class="off"><strong>Off Day</strong><span>Back on Deck Tomorrow.</span></div>' };
+    }
+    if (!todays) {
+      return { tag: 'Picking Today', html: '<div class="off"><strong>Pick Coming Soon</strong><span>' + esc(name) + ' Is on the Clock.</span></div>' };
+    }
+    var p = todays;
+    return {
+      tag: 'Picking Today',
+      html: '<p class="pick-text">' + esc(p.pick) + '</p>' +
+        '<div class="meta"><span class="chip">' + esc(oddsText(p.odds)) + '</span>' +
+        (p.type ? '<span class="chip">' + esc(p.type) + '</span>' : '') + statusChip(p) + '</div>' +
+        '<p class="payout">' + money(STAKE) + ' on the Line. A Win Pays ' + money(toWin(p.odds)) + '.</p>'
+    };
+  }
+  function card(name) {
+    var b = bodyFor(name), s = statsFor(name);
+    return '<article class="card ' + name.toLowerCase() + '">' +
+      '<div class="card-head"><h3>' + esc(name) + "'s Pick Today</h3>" + (b.tag ? '<span class="tag">' + b.tag + '</span>' : '') + '</div>' +
+      '<div class="card-body">' + b.html + '</div>' +
+      '<div class="stats"><p class="label">' + esc(name) + "'s Stats</p><dl>" +
+      '<div><dt>Picks</dt><dd>' + s.n + '</dd></div>' +
+      '<div><dt>Record</dt><dd>' + s.record + '</dd></div>' +
+      '<div><dt>Total Wagered</dt><dd>' + money(s.wagered) + '</dd></div>' +
+      '<div><dt>Total Profit</dt><dd class="' + cls(s.profit) + '">' + money(s.profit, true) + '</dd></div>' +
+      '</dl></div></article>';
+  }
+  $('todayDate').textContent = long(todayKey);
+  $('todayGrid').innerHTML = PEOPLE.map(card).join('');
+
+  /* ---------- history ---------- */
+  var past = picks.filter(function (p) { return p.date < todayKey; }).reverse();
+  var hist = $('history');
+  if (!past.length) {
+    hist.innerHTML = '<div class="empty">No Past Picks Yet. They Will Stack Up Here Once the Season Gets Going.</div>';
+  } else {
+    var rows = '<div class="row head" aria-hidden="true"><span>Date</span><span>Picker</span><span>Pick</span><span>Odds</span><span>Result</span><span class="c-profit">Profit</span></div>';
+    past.forEach(function (p) {
+      var label = p.result === 'win' ? 'Win' : p.result === 'loss' ? 'Loss' : p.result === 'push' ? 'Push' : 'Pending';
+      var rc = p.result === 'win' || p.result === 'loss' || p.result === 'push' ? p.result : 'pending';
+      rows += '<div class="row ' + (rc === 'win' || rc === 'loss' ? rc : '') + '" role="listitem">' +
+        '<span class="c-day"><strong>' + short(p.date) + '</strong><small>Day ' + (diff(SEASON_START, p.date) + 1) + '</small></span>' +
+        '<span><span class="chip who ' + esc(p.picker.toLowerCase()) + '">' + esc(p.picker) + '</span></span>' +
+        '<span class="c-pick">' + esc(p.pick) + '</span>' +
+        '<span class="c-odds">' + esc(oddsText(p.odds)) + '</span>' +
+        '<span><span class="chip ' + rc + '">' + label + '</span></span>' +
+        '<span class="c-profit ' + (p.result === 'push' ? 'zero' : cls(p.profit)) + '">' + (p.result === 'pending' ? '-' + money(STAKE).slice(0) : money(p.profit, true)) + '</span>' +
+        '</div>';
+    });
+    hist.setAttribute('role', 'list');
+    hist.innerHTML = rows;
+    $('historyMeta').textContent = past.length + (past.length === 1 ? ' Pick' : ' Picks') + '. Newest First. Green Is a Win, Red Is a Loss.';
+  }
+})();
+</script>
+
+</body>
+</html>
