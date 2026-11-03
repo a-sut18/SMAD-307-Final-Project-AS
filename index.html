@@ -246,12 +246,14 @@ footer { color: var(--muted); font-size: .85rem; font-weight: 600; text-align: c
    odds   : American odds, e.g. -110 or 150
    result : "pending", "win", "loss" or "push"
    ============================================================ */
-const SEASON_START = "2026-11-02"; // Day 1
+const SEASON_START = "2026-11-01"; // Day 1
 const FIRST_PICKER = "Connor";
 const STAKE = 10;                  // combined dollars bet per day ($5 each)
 
 const PICKS = [
-  { date: "2026-11-02", picker: "Connor", pick: "Tennessee State +10.5 vs. Murray State", type: "Spread", odds: -112, result: "pending" },
+  { date: "2026-11-01", picker: "Connor", pick: "High Point -7.5 vs. Liberty", type: "Spread", odds: -110, result: "win" },
+  { date: "2026-11-02", picker: "Aidan", pick: "McNeese vs. UAB Under 153.5", type: "Over-Under", odds: -110, result: "loss" },
+  { date: "2026-11-03", picker: "Connor", pick: "Purdue Fort Wayne vs. Duquesne Under 153.5", type: "Over-Under", odds: -105, result: "pending" },
   // Add each new day's pick above this line (keep a comma after each one).
 ];
 </script>
